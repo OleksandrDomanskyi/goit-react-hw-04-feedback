@@ -1,0 +1,33 @@
+.list {
+    display: flex;
+    justify-content: center;
+}
+
+.item {
+    list-style: none;
+    margin-right: 15px;
+}
+
+.btn {
+    text-transform: capitalize;
+    width: 100px;
+    height: 45px;
+
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 5px;
+
+    background-color: orange;
+    color: blue;
+    cursor: pointer;
+
+    transition-property: color, background-color;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover,
+    &:focus {
+        color: orange;
+        background-color: blue;
+    }
+}
