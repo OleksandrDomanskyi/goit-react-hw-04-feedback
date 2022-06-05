@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState, useCallback } from "react";
 
 import Section from "./components/Section";
 import FeedbackOptions from "./components/FeedbackOptions";
@@ -7,43 +7,40 @@ import Notification from "./components/Notification";
 
 const options = ['good', 'neutral', 'bad'];
 
-class App extends Component { 
+const App = () => {
 
-  state = {
+  const [state, setState] = useState({
     good: 0,
     neutral: 0,
     bad: 0,
+  });
+
+  const countTotalFeedback = () => {
+    const { good, neutral, bad } = state;
+    return good + neutral + bad
   };
 
-  countTotalFeedback() {
-    const { good, neutral, bad } = this.state;
-    return good + bad + neutral
-  };
-
-  countPositiveFeedbackPercentage() {
-    const { good } = this.state;
-    const total = this.countTotalFeedback();
+  const countPositiveFeedbackPercentage = () => {
+    const { good } = state;
     const percentage = Math.round(
-      (good * 100) / total);
+      (good * 100) / countTotalFeedback());
     return percentage;
   };
 
-  addFeedback = (propertyName) => {
-    this.setState(prevState => {
+  const addFeedback = useCallback((propertyName) => {
+    setState(prevState => {
       return {
-        [propertyName]: prevState[propertyName] +1
-      }
-    })
-  };
+        ...prevState,
+        [propertyName]: prevState[propertyName] + 1
+      };
+    });
+  }, [setState]);
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const positivePercentage = this.countPositiveFeedbackPercentage();
+  const { good, neutral, bad } = state;
+  const total = countTotalFeedback();
+  const positivePercentage = countPositiveFeedbackPercentage();
 
-    const { addFeedback } = this;
-  
-    return (
+  return (
     <div>
         <Section title='Please leave feedback'>
           <FeedbackOptions
@@ -63,7 +60,6 @@ class App extends Component {
         </Section>
     </div>
   );
-  }
-};
+}
 
 export default App;
